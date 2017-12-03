@@ -1,53 +1,25 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class Input {
+    final Read.Mode mode;
+    final int day;
+    final String suffix;
 
-    public enum Mode {
-        REAL("resources/"),
-        TEST("resources/test/");
-
-        final String dir;
-
-        Mode(String postfix) {
-            this.dir = postfix;
-        }
+    private Input(Read.Mode mode, int day, String suffix) {
+        this.mode = mode;
+        this.day = day;
+        this.suffix = suffix;
     }
 
-    private static final String resDir = "resources";
-
-    public static int[] asIntArray(int day, Mode set, String splitter){
-        return asStream(day, set)
-                .flatMap(line -> Stream.of(line.split(splitter)))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+    public static Input für(Read.Mode mode, int day, String suffix){
+        return new Input(mode,day,suffix);
     }
 
-    public static int[] asIntArray(int day, Mode set){
-        return asStream(day, set)
-                .flatMap(line -> Stream.of(line.split("")))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+    public static Input für(Read.Mode mode, int day){
+        return new Input(mode,day,"");
     }
 
-    public static String asString(int day, Mode set){
-        return asStream(day, set).collect(Collectors.joining("\n"));
+    public static Input für(int day){
+        return new Input(Read.Mode.REAL, day, "");
     }
-
-    public static Stream<String> asStream(int day, Mode set) {
-        final String filename = String.format("%sd%d.txt", set.dir, day);
-        try {
-            return new BufferedReader(new FileReader(filename)).lines();
-        } catch (FileNotFoundException e) {
-            System.out.println("no ready :( " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("doing advent; didn't read");
-        }
-    }
-
 }

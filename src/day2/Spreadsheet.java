@@ -1,6 +1,5 @@
 package day2;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,15 +12,8 @@ public class Spreadsheet {
         this.rows = rows;
     }
 
-    /**
-     * Expects a string of sheet rows. Each row is a tab-separated string of integer numbers.
-     */
-    public Spreadsheet(Stream<String> rowStream){
-        rows = rowStream
-                .map(line ->
-                        Arrays.stream(line.split("\\s+"))
-                                .map(Integer::parseInt)
-                                .collect(Collectors.toList()))
+    public Spreadsheet(Stream<List<Integer>> oooh){
+        rows = oooh
                 .map(Row::new)
                 .collect(Collectors.toList());
     }
@@ -30,7 +22,7 @@ public class Spreadsheet {
         return rows.stream().mapToInt(Row::checksum).sum();
     }
 
-    public List<Row> getRows() {
+    List<Row> getRows() {
         return rows;
     }
 }
