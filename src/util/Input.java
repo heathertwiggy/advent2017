@@ -8,32 +8,39 @@ import java.util.stream.Stream;
 
 public class Input {
 
-    public enum Challenge {
-        FIRST(""),
-        SECOND("-2");
+    public enum Mode {
+        REAL("resources/"),
+        TEST("resources/test/");
 
-        final String postfix;
+        final String dir;
 
-        Challenge(String postfix) {
-            this.postfix = postfix;
+        Mode(String postfix) {
+            this.dir = postfix;
         }
     }
 
     private static final String resDir = "resources";
 
-    public static int[] asIntArray(int day, Challenge set){
+    public static int[] asIntArray(int day, Mode set, String splitter){
+        return asStream(day, set)
+                .flatMap(line -> Stream.of(line.split(splitter)))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+    }
+
+    public static int[] asIntArray(int day, Mode set){
         return asStream(day, set)
                 .flatMap(line -> Stream.of(line.split("")))
                 .mapToInt(Integer::parseInt)
                 .toArray();
     }
 
-    public static String asString(int day, Challenge set){
+    public static String asString(int day, Mode set){
         return asStream(day, set).collect(Collectors.joining("\n"));
     }
 
-    public static Stream<String> asStream(int day, Challenge set) {
-        final String filename = String.format("%s/d%s%s.txt", resDir, day, set.postfix);
+    public static Stream<String> asStream(int day, Mode set) {
+        final String filename = String.format("%sd%d.txt", set.dir, day);
         try {
             return new BufferedReader(new FileReader(filename)).lines();
         } catch (FileNotFoundException e) {

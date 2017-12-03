@@ -3,13 +3,12 @@ package day1;
 import util.Input;
 import util.IntArrayTester;
 
-import static util.Input.Challenge.FIRST;
 
 public class Day1Runner {
 
     public static void main(String[] args) {
 
-        int[] asInt = Input.asIntArray(1, FIRST);
+        int[] asInt = Input.asIntArray(1, Input.Mode.REAL);
 
         ReverseCaptcha captcha = new ReverseCaptcha();
 
